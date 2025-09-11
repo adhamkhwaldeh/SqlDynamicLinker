@@ -80,7 +80,7 @@ Contributions are welcome! Please fork the repository, create a new branch, and 
 
 ## Contact
 
-For support or inquiries, please contact [your-email@example.com](mailto:your-email@example.com).
+For support or inquiries, please contact [your-email@example.com](mailto:adhamkhwaldeh@gmail.com).
 
 ## Acknowledgments
 
