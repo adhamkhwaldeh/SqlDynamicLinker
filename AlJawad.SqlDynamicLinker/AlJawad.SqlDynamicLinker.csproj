@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.4.9" />
@@ -25,5 +26,19 @@
 		<PackageReference Include="Swashbuckle.Examples" Version="4.1.0" />
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.9" />
 	</ItemGroup>
-	
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<!-- or netstandard2.1, etc. -->
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>AlJawad.SqlDynamicLinker</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>Adham al khawada</Authors>
+		<Company>Adham al khawalda</Company>
+		<Description>A .NET library designed to delegate powerful control to frontend developers, such as sorting, including sub models, and collection and comprehensive filtration for simple and complex queries from the frontend side</Description>
+		<PackageTags>csharp;dotnet;library</PackageTags>
+		<RepositoryUrl>https://github.com/adhamkhwaldeh/SqlDynamicLinker</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+
 </Project>
