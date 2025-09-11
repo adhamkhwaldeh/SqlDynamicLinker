@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{21C1C44E-2D4E-46B1-A49C-3309CB4B01F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{4706298D-754F-48C7-A658-B9C09A0A645B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlJawad.SqlDynamicLinker", "AlJawad.SqlDynamicLinker\AlJawad.SqlDynamicLinker.csproj", "{82214B0F-89C2-4DE5-9958-309FF68DB1D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlJawad.SqlDynamicLinkerShowCases", "AlJawad.SqlDynamicLinkerShowCases\AlJawad.SqlDynamicLinkerShowCases.csproj", "{412B0236-2FB8-4065-ADBC-CE9048CDB59A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82214B0F-89C2-4DE5-9958-309FF68DB1D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82214B0F-89C2-4DE5-9958-309FF68DB1D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82214B0F-89C2-4DE5-9958-309FF68DB1D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82214B0F-89C2-4DE5-9958-309FF68DB1D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{412B0236-2FB8-4065-ADBC-CE9048CDB59A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{412B0236-2FB8-4065-ADBC-CE9048CDB59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{412B0236-2FB8-4065-ADBC-CE9048CDB59A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{412B0236-2FB8-4065-ADBC-CE9048CDB59A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82214B0F-89C2-4DE5-9958-309FF68DB1D0} = {4706298D-754F-48C7-A658-B9C09A0A645B}
+		{412B0236-2FB8-4065-ADBC-CE9048CDB59A} = {21C1C44E-2D4E-46B1-A49C-3309CB4B01F1}
+	EndGlobalSection
+EndGlobal
