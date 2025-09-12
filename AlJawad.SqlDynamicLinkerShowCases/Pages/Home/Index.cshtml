@@ -1,0 +1,118 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    ViewBag.Title = "Product List";
+}
+
+<style>
+    #assets-data-table {
+        font-size: 0.85rem; /* Adjust as needed */
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .full-width-input {
+        width: 100%;
+        box-sizing: border-box; /* Ensures padding and borders are included in the width */
+    }
+</style>
+
+<!--Data Table start -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-success list-panel" id="list-panel">
+            @*<div class="panel-heading list-panel-heading">  
+               <h1 class="panel-title list-panel-title">Assets</h1>  
+           </div>*@  
+           <div class="panel-body">
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table id="assets-data-table" class="table table-striped table-bordered table-sm"
+                           style="width:100%; min-width: 600px;">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Data Table end -->
+@section Scripts
+{
+    <script>
+        var assetListVM;
+        $(function () {
+            assetListVM = {
+                    dt: null,
+
+                    init: function () {
+                        dt = $('#assets-data-table').DataTable({
+                            "serverSide": true,
+                            "processing": true,
+                            "ajax": {
+                                "url": "/Home/Get"
+                            },
+                            initComplete: function () {
+                                var api = this.api();
+
+                                // For each column
+                                api.columns().eq(0).each(function (colIdx) {
+                                    // Set the header cell to contain the input element
+                                    /* var cell = $('.filters th').eq(*/
+                                    var cell = $('th').eq(
+                                        $(api.column(colIdx).header()).index()
+                                    );
+                                    var title = $(cell).text();
+                                                $(cell).html('<input type="text" placeholder="' + title + '" class="full-width-input form-control"/>');
+
+                                    // On every keypress in this input
+                                    $(
+                                        'input',
+                                        /* $('.filters th').eq($(api.column(colIdx).header()).index())*/
+                                        $('th').eq($(api.column(colIdx).header()).index())
+                                    )
+                                        .off('keyup change')
+                                        .on('change', function (e) {
+                                            // Get the search value
+                                            $(this).attr('title', $(this).val());
+                                            api.column(colIdx).search(this.value != '' ? this.value : '',).draw();
+
+                                        }).on('keyup', function (e) {
+                                            e.stopPropagation();
+
+                                            $(this).trigger('change');
+                                        });
+                                });
+                            },
+                            "columns": [
+                                { "title": "Id", "name":"id",  "data": "id", "searchable": false, "visible": false},
+                                { "title": "Name", "name": "name", "data": "name", "searchable": true },
+                                { "title": "Main Category", "name": "mainCategory.name", "data": "mainCategory.name", "searchable": true },
+                                { "title": "SKU", "name": "sku", "data": "sku", "searchable": true },
+                                { "title": "Description", "name": "description", "data": "description", "searchable": true },
+                            ],
+                            "columnDefs": [
+                                {
+                                    "targets": [0],
+                                    "visible": false,
+                                    "searchable": false
+                                },
+                                {
+                                    "targets": [1],
+                                    "visible": true,
+                                    "searchable": true
+                                }
+                            ],
+                            "lengthMenu": [[25, 50, 100], [ 25, 50, 100]],
+                        });
+                    }
+                }
+
+        // initialize the datatables
+            assetListVM.init();
+
+        });
+    </script>
+    @*   <script src="~/js/datatable/ApplicationTheme.js"></script> *@
+}

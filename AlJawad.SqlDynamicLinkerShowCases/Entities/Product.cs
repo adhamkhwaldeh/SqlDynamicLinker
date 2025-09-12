@@ -11,6 +11,10 @@
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public int MainCategoryId { get; set; }
+
+        public Category MainCategory { get; set; }
+
         // Navigation
         public ICollection<ProductCategory> ProductCategories { get; set; }
     }

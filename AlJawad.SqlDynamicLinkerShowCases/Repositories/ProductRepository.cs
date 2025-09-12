@@ -11,7 +11,7 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Repositories
         public ProductRepository()
         {
             // Categories
-            _categories = new List<Category>
+            var _categoryList = new List<Category>
         {
             new Category { Id = 1, Name = "Electronics", Description = "Devices and gadgets" },
             new Category { Id = 2, Name = "Books", Description = "Printed and digital books" },
@@ -23,31 +23,32 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Repositories
             new Category { Id = 8, Name = "Automotive", Description = "Car accessories and tools" },
             new Category { Id = 9, Name = "Music", Description = "Instruments and audio gear" },
             new Category { Id = 10, Name = "Office Supplies", Description = "Work and study essentials" }
-        }.AsQueryable();
+        };
+            _categories = _categoryList.AsQueryable();
 
             // Products
             _products = new List<Product>
         {
-            new Product { Id = 1, Name = "Smartphone X", Description = "Latest smartphone with 128GB storage", Price = 699.99m, StockQuantity = 50, SKU = "ELEC-SMART-001", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 2, Name = "Laptop Pro 15\"", Description = "High-performance laptop", Price = 1299.99m, StockQuantity = 20, SKU = "ELEC-LAPTOP-002", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 3, Name = "Wireless Headphones", Description = "Noise-cancelling headphones", Price = 199.99m, StockQuantity = 75, SKU = "ELEC-AUDIO-003", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 4, Name = "Novel - The Great Story", Description = "Bestselling fiction novel", Price = 14.99m, StockQuantity = 200, SKU = "BOOK-NOVEL-004", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 5, Name = "Programming in C#", Description = "Technical programming book", Price = 39.99m, StockQuantity = 80, SKU = "BOOK-TECH-005", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 6, Name = "T-Shirt - Blue", Description = "Cotton T-shirt size M", Price = 19.99m, StockQuantity = 100, SKU = "CLOTH-TSHIRT-006", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 7, Name = "Jeans - Regular Fit", Description = "Comfortable denim jeans", Price = 49.99m, StockQuantity = 60, SKU = "CLOTH-JEANS-007", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 8, Name = "Cooking Pan Set", Description = "Non-stick kitchen pan set", Price = 89.99m, StockQuantity = 40, SKU = "HOME-PAN-008", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 9, Name = "Coffee Maker", Description = "Automatic drip coffee machine", Price = 129.99m, StockQuantity = 30, SKU = "HOME-COFFEE-009", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 10, Name = "Running Shoes", Description = "Lightweight running shoes", Price = 89.99m, StockQuantity = 60, SKU = "SPORT-SHOES-010", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 11, Name = "Basketball", Description = "Official size basketball", Price = 29.99m, StockQuantity = 150, SKU = "SPORT-BALL-011", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 12, Name = "LEGO Starter Set", Description = "Creative building blocks for kids", Price = 59.99m, StockQuantity = 120, SKU = "TOY-LEGO-012", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 13, Name = "Action Figure", Description = "Superhero action figure", Price = 24.99m, StockQuantity = 90, SKU = "TOY-FIGURE-013", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 14, Name = "Lipstick - Red", Description = "Matte finish lipstick", Price = 14.99m, StockQuantity = 140, SKU = "BEAUTY-LIP-014", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 15, Name = "Shampoo 500ml", Description = "Organic hair care shampoo", Price = 12.99m, StockQuantity = 200, SKU = "BEAUTY-CARE-015", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 16, Name = "Car Vacuum Cleaner", Description = "Portable auto vacuum cleaner", Price = 49.99m, StockQuantity = 70, SKU = "AUTO-TOOL-016", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 17, Name = "Car Phone Holder", Description = "Magnetic phone holder for cars", Price = 19.99m, StockQuantity = 110, SKU = "AUTO-HOLDER-017", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 18, Name = "Acoustic Guitar", Description = "6-string wooden acoustic guitar", Price = 199.99m, StockQuantity = 25, SKU = "MUSIC-GUITAR-018", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 19, Name = "Digital Piano", Description = "88-key digital piano", Price = 599.99m, StockQuantity = 15, SKU = "MUSIC-PIANO-019", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-            new Product { Id = 20, Name = "Office Chair", Description = "Ergonomic office chair", Price = 149.99m, StockQuantity = 35, SKU = "OFFICE-CHAIR-020", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+            new Product { Id = 1, Name = "Smartphone X", Description = "Latest smartphone with 128GB storage", Price = 699.99m, StockQuantity = 50, SKU = "ELEC-SMART-001", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow,MainCategoryId = _categoryList[0].Id,MainCategory = _categoryList[0]},
+            new Product { Id = 2, Name = "Laptop Pro 15\"", Description = "High-performance laptop", Price = 1299.99m, StockQuantity = 20, SKU = "ELEC-LAPTOP-002", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[0].Id,MainCategory = _categoryList[0]},
+            new Product { Id = 3, Name = "Wireless Headphones", Description = "Noise-cancelling headphones", Price = 199.99m, StockQuantity = 75, SKU = "ELEC-AUDIO-003", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[1].Id,MainCategory = _categoryList[1]},
+            new Product { Id = 4, Name = "Novel - The Great Story", Description = "Bestselling fiction novel", Price = 14.99m, StockQuantity = 200, SKU = "BOOK-NOVEL-004", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[1].Id,MainCategory = _categoryList[1]},
+            new Product { Id = 5, Name = "Programming in C#", Description = "Technical programming book", Price = 39.99m, StockQuantity = 80, SKU = "BOOK-TECH-005", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[2].Id,MainCategory = _categoryList[2]},
+            new Product { Id = 6, Name = "T-Shirt - Blue", Description = "Cotton T-shirt size M", Price = 19.99m, StockQuantity = 100, SKU = "CLOTH-TSHIRT-006", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[2].Id,MainCategory = _categoryList[2]},
+            new Product { Id = 7, Name = "Jeans - Regular Fit", Description = "Comfortable denim jeans", Price = 49.99m, StockQuantity = 60, SKU = "CLOTH-JEANS-007", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[3].Id,MainCategory = _categoryList[3]},
+            new Product { Id = 8, Name = "Cooking Pan Set", Description = "Non-stick kitchen pan set", Price = 89.99m, StockQuantity = 40, SKU = "HOME-PAN-008", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[3].Id,MainCategory = _categoryList[3]},
+            new Product { Id = 9, Name = "Coffee Maker", Description = "Automatic drip coffee machine", Price = 129.99m, StockQuantity = 30, SKU = "HOME-COFFEE-009", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[4].Id,MainCategory = _categoryList[4]},
+            new Product { Id = 10, Name = "Running Shoes", Description = "Lightweight running shoes", Price = 89.99m, StockQuantity = 60, SKU = "SPORT-SHOES-010", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[4].Id,MainCategory = _categoryList[4]},
+            new Product { Id = 11, Name = "Basketball", Description = "Official size basketball", Price = 29.99m, StockQuantity = 150, SKU = "SPORT-BALL-011", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[5].Id,MainCategory = _categoryList[5]},
+            new Product { Id = 12, Name = "LEGO Starter Set", Description = "Creative building blocks for kids", Price = 59.99m, StockQuantity = 120, SKU = "TOY-LEGO-012", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[5].Id,MainCategory = _categoryList[5]},
+            new Product { Id = 13, Name = "Action Figure", Description = "Superhero action figure", Price = 24.99m, StockQuantity = 90, SKU = "TOY-FIGURE-013", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[6].Id,MainCategory = _categoryList[6]},
+            new Product { Id = 14, Name = "Lipstick - Red", Description = "Matte finish lipstick", Price = 14.99m, StockQuantity = 140, SKU = "BEAUTY-LIP-014", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[6].Id,MainCategory = _categoryList[6]},
+            new Product { Id = 15, Name = "Shampoo 500ml", Description = "Organic hair care shampoo", Price = 12.99m, StockQuantity = 200, SKU = "BEAUTY-CARE-015", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[7].Id,MainCategory = _categoryList[7]},
+            new Product { Id = 16, Name = "Car Vacuum Cleaner", Description = "Portable auto vacuum cleaner", Price = 49.99m, StockQuantity = 70, SKU = "AUTO-TOOL-016", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[7].Id,MainCategory = _categoryList[7]},
+            new Product { Id = 17, Name = "Car Phone Holder", Description = "Magnetic phone holder for cars", Price = 19.99m, StockQuantity = 110, SKU = "AUTO-HOLDER-017", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[8].Id,MainCategory = _categoryList[8]},
+            new Product { Id = 18, Name = "Acoustic Guitar", Description = "6-string wooden acoustic guitar", Price = 199.99m, StockQuantity = 25, SKU = "MUSIC-GUITAR-018", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[8].Id,MainCategory = _categoryList[8]},
+            new Product { Id = 19, Name = "Digital Piano", Description = "88-key digital piano", Price = 599.99m, StockQuantity = 15, SKU = "MUSIC-PIANO-019", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[9].Id,MainCategory = _categoryList[9]},
+            new Product { Id = 20, Name = "Office Chair", Description = "Ergonomic office chair", Price = 149.99m, StockQuantity = 35, SKU = "OFFICE-CHAIR-020", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow ,MainCategoryId = _categoryList[9].Id,MainCategory = _categoryList[9]}
         }.AsQueryable();
 
             // Relations

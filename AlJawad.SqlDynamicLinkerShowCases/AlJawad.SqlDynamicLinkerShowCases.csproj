@@ -10,6 +10,13 @@
 
   </PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="DataTables.AspNetCore.Mvc" Version="1.4.2" />
+
+			<PackageReference Include="AutoMapper" Version="12.0.0" />
+			<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+			<!--<PackageReference Include="AutoMapper.QueryableExtensions" Version="12.0.0" />-->
+
+
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="9.0.4" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.4" />

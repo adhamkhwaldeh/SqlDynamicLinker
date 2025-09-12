@@ -2,8 +2,14 @@
 using AlJawad.SqlDynamicLinkerShowCases.Entities;
 using AlJawad.SqlDynamicLinkerShowCases.Repositories;
 using Microsoft.AspNetCore.Http;
+using DataTables.AspNetCore.Mvc.Binder;
 using Microsoft.AspNetCore.Mvc;
 using AlJawad.SqlDynamicLinker.DynamicFilter;
+using DataTables.AspNetCore.Mvc.Binder;
+using AlJawad.SqlDynamicLinker.Enums;
+using AlJawad.SqlDynamicLinker.Models;
+using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 
 namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
 {
@@ -13,10 +19,12 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
     {
         private readonly ProductRepository _repository;
 
-        // Inject the singleton repository via constructor
-        public ProductAPIController(ProductRepository repository)
+        private readonly IMapper _mapper;
+        
+        public ProductAPIController(IMapper mapper,ProductRepository repository)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         // GET: api/productapi/products
@@ -34,7 +42,6 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
             var categories = _repository.GetCategories();
             return Ok(categories);
         }
-
 
     }
 }

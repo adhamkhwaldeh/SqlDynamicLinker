@@ -4,6 +4,9 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Register AutoMapper scanning the current assembly (or specify types)
+builder.Services.AddAutoMapper(typeof(Program));
+
 // Register controllers
 builder.Services.AddControllers().AddJsonOptions(
                 x =>
@@ -58,6 +61,7 @@ builder.Services.AddMvc()
          });
 
 
+builder.Services.AddControllersWithViews(); // add MVC
 
 var app = builder.Build();
 
@@ -93,6 +97,14 @@ app.MapControllers();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// enable static files, routing, etc.
+app.UseStaticFiles();
+app.UseRouting();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapStaticAssets();
 app.MapRazorPages()

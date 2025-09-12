@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AlJawad.SqlDynamicLinkerShowCases.Pages
+namespace AlJawad.SqlDynamicLinkerShowCases.Pages.Home
 {
     public class IndexModel : PageModel
     {
