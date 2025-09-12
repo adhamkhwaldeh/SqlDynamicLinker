@@ -9,8 +9,10 @@ using System.Linq.Dynamic.Core;
 using System.Globalization;
 using AlJawad.SqlDynamicLinker.Models;
 using AlJawad.SqlDynamicLinker.Core;
+using AlJawad.SqlDynamicLinker.DynamicFilter;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace AlJawad.SqlDynamicLinker.DynamicFilter
+namespace AlJawad.SqlDynamicLinker.Extensions
 {
     public static class DynamicQueryExtensions
     {
@@ -22,6 +24,30 @@ namespace AlJawad.SqlDynamicLinker.DynamicFilter
 
             var builder = new LinqExpressionBuilder();
             builder.Build(filter.DynamicFilters);
+            return builder.Filter(query);
+        }
+
+        public static IQueryable<T> Filter<T>(this IQueryable<T> query, IEnumerable<EntityFilter> filter)
+        {
+            if (filter == null)
+                return query;
+
+            var builder = new LinqExpressionBuilder();
+            builder.Build(filter);
+            return builder.Filter(query);
+        }
+
+        public static IQueryable<T> Filter<T>(this IQueryable<T> query, EntityFilter filter)
+        {
+            if (filter == null)
+                return query;
+
+            var builder = new LinqExpressionBuilder();
+            builder.Build(filter);
+            return builder.Filter(query);
+        }
+
+        public static IQueryable<T> Filter<T>(this LinqExpressionBuilder builder, IQueryable<T> query){
             var predicate = builder.Expression;
             var parameters = builder.Parameters.ToArray();
             if (string.IsNullOrWhiteSpace(predicate))
@@ -31,7 +57,7 @@ namespace AlJawad.SqlDynamicLinker.DynamicFilter
             {
                 ResolveTypesBySimpleName = true,
                 AllowNewToEvaluateAnyType = true,
-                
+
                 CustomTypeProvider = new CustomTypeProvider()
 
                 //ResolveTypesBySimpleName = true,
@@ -39,7 +65,7 @@ namespace AlJawad.SqlDynamicLinker.DynamicFilter
             //xx.NumberParseCulture = CultureInfo.
             //return query.Where("@0.Contains(Id)", intList);
             return query.Where(config, predicate, parameters);
-                        //.Where(predicate, parameters);
+            //.Where(predicate, parameters);
         }
 
     }

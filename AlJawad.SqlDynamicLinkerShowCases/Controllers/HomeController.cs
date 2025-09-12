@@ -1,5 +1,6 @@
 ﻿using AlJawad.SqlDynamicLinker.DynamicFilter;
 using AlJawad.SqlDynamicLinker.Enums;
+using AlJawad.SqlDynamicLinker.Extensions;
 using AlJawad.SqlDynamicLinker.Models;
 using AlJawad.SqlDynamicLinkerShowCases.Repositories;
 using AutoMapper;
@@ -13,8 +14,6 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
     {
 
         private readonly ProductRepository _repository;
-
-        // Inject the singleton repository via constructor
 
         private readonly IMapper _mapper;
 
@@ -35,7 +34,7 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
         /// </summary>
         List<ColumnBase> IncludePropertiesForListing = [
             new ColumnBase("MainCategory")
-            ];
+        ];
 
         public HomeController(IMapper mapper, ProductRepository repository)
         {
@@ -99,45 +98,34 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
         }
 
 
-        public BasePagingFilter BuildPagingFilterFromDataTable([DataTablesRequest] DataTablesRequest requestModel)
-        {
-            var filter = _mapper.Map<BasePagingFilter>(requestModel);
-
-            var QueryAndSearchFilter = MergeSearchAndDefaultFilter(filter.DynamicFilters, requestModel.Search?.Value);
-
-            filter.DynamicFilters = QueryAndSearchFilter;
-
-            filter.IncludeProperties = IncludePropertiesForListing;
-            return filter;
-        }
-
-
-        public async Task<IActionResult> ExecutePageFilter2ActionResult([DataTablesRequest] DataTablesRequest requestModel, BasePagingFilter filter)
-        {
-            var response = _repository.GetProducts();
-
-            response = response.Filter(filter);
-
-            return Json(new
-            {
-                draw = requestModel.Draw,
-                recordsFiltered = response.Count(),// response.PageCount,
-                recordsTotal = response.Count(),
-                data = response,
-                length = requestModel.Length,
-                pageLength = requestModel.Length,
-                //start = 1
-            });
-        }
 
         public virtual async Task<IActionResult> Get([DataTablesRequest] DataTablesRequest requestModel)
         {
             try
             {
-                var filter = BuildPagingFilterFromDataTable(requestModel);
+                var filter = _mapper.Map<BasePagingFilter>(requestModel);
 
-                return await ExecutePageFilter2ActionResult(requestModel, filter);
+                var QueryAndSearchFilter = MergeSearchAndDefaultFilter(filter.DynamicFilters, requestModel.Search?.Value);
 
+                filter.DynamicFilters = QueryAndSearchFilter;
+
+                filter.IncludeProperties = IncludePropertiesForListing;
+
+                var response = _repository.GetProducts();
+
+                response = response.Filter(filter);
+                response = response.Sort(filter.DynamicSorting);
+
+                return Json(new
+                {
+                    draw = requestModel.Draw,
+                    recordsFiltered = response.Count(),// response.PageCount,
+                    recordsTotal = response.Count(),
+                    data = response,
+                    length = requestModel.Length,
+                    pageLength = requestModel.Length,
+                    //start = 1
+                });
             }
             catch (Exception ex)
             {

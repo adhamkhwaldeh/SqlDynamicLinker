@@ -4,12 +4,12 @@ using AlJawad.SqlDynamicLinkerShowCases.Repositories;
 using Microsoft.AspNetCore.Http;
 using DataTables.AspNetCore.Mvc.Binder;
 using Microsoft.AspNetCore.Mvc;
-using AlJawad.SqlDynamicLinker.DynamicFilter;
 using DataTables.AspNetCore.Mvc.Binder;
 using AlJawad.SqlDynamicLinker.Enums;
 using AlJawad.SqlDynamicLinker.Models;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
+using AlJawad.SqlDynamicLinker.Extensions;
 
 namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
 {
