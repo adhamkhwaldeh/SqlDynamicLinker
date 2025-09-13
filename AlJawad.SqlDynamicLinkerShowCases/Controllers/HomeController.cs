@@ -98,7 +98,6 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
         }
 
 
-
         public virtual async Task<IActionResult> Get([DataTablesRequest] DataTablesRequest requestModel)
         {
             try

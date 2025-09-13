@@ -1,6 +1,6 @@
 {
   "IncludeProperties": null,
-  "Filters": [
+  "DynamicFilers": [
     {
       "logic": "and",
       "dataName": "Name",

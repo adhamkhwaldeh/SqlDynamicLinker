@@ -34,7 +34,7 @@
 		<!-- or netstandard2.1, etc. -->
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>AlJawad.SqlDynamicLinker</PackageId>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 		<Authors>Adham al khawada</Authors>
 		<Company>Adham al khawalda</Company>
 		<PackageReadmeFile>README.md</PackageReadmeFile>

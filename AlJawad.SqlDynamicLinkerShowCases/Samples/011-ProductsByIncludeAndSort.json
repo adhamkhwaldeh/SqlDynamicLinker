@@ -10,7 +10,7 @@
       "dataName": "ProductCategories.Category"
     }
   ],
-  "Filters": [
+  "DynamicFilers": [
     {
       "logic": "and",
       "dataName": "MainCategoryId",

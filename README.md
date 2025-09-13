@@ -10,7 +10,7 @@ This library is perfect for building APIs that need to support complex data grid
 - **Dynamic Sorting**: Sort by multiple fields and in ascending or descending order.
 - **Dynamic Eager Loading**: Include related entities to avoid N+1 query problems.
 - **Spatial Queries**: Filter data based on geographic location (latitude, longitude, and radius).
-- **Easy to Use**: A simple `.Filter()` extension method is all you need to apply the dynamic query.
+- **Easy to Use**: A simple `.Filter()` , `.Includes()` and `.Sort()` extension method is all you need to apply the dynamic query.
 - **JSON-Based**: Uses a clear and intuitive JSON structure for defining queries.
 
 ## Installation
@@ -110,8 +110,8 @@ Here is a full example of a `BaseQueryableFilter` object:
 ```json
 {
   "IncludeProperties": [
-    { "PropertyName": "MainCategory" },
-    { "PropertyName": "ProductCategories.Category" }
+    { "dataName": "MainCategory" },
+    { "dataName": "ProductCategories.Category" }
   ],
   "Filters": [
     {
@@ -212,6 +212,8 @@ The `DynamicSorting` array allows you to sort the results by one or more fields.
 - `dataName` (string): The name of the property to sort by.
 - `IsAscending` (boolean): `true` for ascending order, `false` for descending.
 
+The sort also support json structure but you have to pay attention for the performance (use indexing if needed)
+
 **Example: Sort products by price (descending) and then by name (ascending)**
 
 ```json
@@ -235,15 +237,15 @@ The `DynamicSorting` array allows you to sort the results by one or more fields.
 
 The `IncludeProperties` array allows you to specify which related entities to eager load. This is equivalent to using `.Include()` in Entity Framework. Each object in the array has one property:
 
-- `PropertyName` (string): The name of the navigation property to include. You can use dot notation for nested includes (e.g., `"Order.OrderItems"`).
+- `dataName` (string): The name of the navigation property to include. You can use dot notation for nested includes (e.g., `"Order.OrderItems"`).
 
 **Example: Include the main category and the product's categories**
 
 ```json
 {
   "IncludeProperties": [
-    { "PropertyName": "MainCategory" },
-    { "PropertyName": "ProductCategories.Category" }
+    { "dataName": "MainCategory" },
+    { "dataName": "ProductCategories.Category" }
   ]
 }
 ```

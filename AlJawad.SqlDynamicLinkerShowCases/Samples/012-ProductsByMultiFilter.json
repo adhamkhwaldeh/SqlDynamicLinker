@@ -1,17 +1,20 @@
-//Not Fully tested
-//{
-//  "Filters": [
-//    {
-//      "InnerLogicList": [ "or", "or", "and" ],
-//      "ValueList": [ "Smartphone", "Headphones", "MainCategoyId" ],
-//      "OperatorList": [ "StartsWith", "EndsWith", "Equal" ],
-      
-//      "NamePropertyOfCollectionList": [
-//        "Name",
-//        "Name",
-//        1
-//      ]
-//    }
+{
 
-//  ]
-//}
+  "DynamicFilters": [
+    {
+      "logic": "and",
+      "dataName": "ProductCategories",
+
+      "NamePropertyOfCollectionList": [
+        "Category.Name",
+        "Category.Name",
+        "Category.Id"
+      ],
+      "InnerLogicList": [ "or", "or", "or" ],
+      "ValueList": [ "Smartphone", "Headphones", 1 ],
+      "OperatorList": [ "StartsWith", "EndsWith", "Equal" ]
+
+    }
+  ]
+
+}

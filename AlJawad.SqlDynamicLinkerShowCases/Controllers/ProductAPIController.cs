@@ -56,8 +56,12 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
             }
 
             var json = System.IO.File.ReadAllText(path);
-            var settings = new JsonSerializerSettings();
-            settings.Converters.Add(new EntityBaseFilterConverter());
+            var settings = new JsonSerializerSettings
+            {
+                Converters = { new EntityBaseFilterConverter() },
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
             var filter = JsonConvert.DeserializeObject<BaseQueryableFilter>(json, settings);
 
             var products = _repository.GetProducts().Filter(filter);

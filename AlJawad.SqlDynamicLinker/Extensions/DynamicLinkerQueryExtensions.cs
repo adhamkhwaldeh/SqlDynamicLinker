@@ -98,7 +98,7 @@ namespace AlJawad.SqlDynamicLinker.Extensions
         {
           if (includes == null)
                 return query;
-          return  includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty.DataName));
+          return  includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty.DataName.Trim(new char[] { ' ', '\n', '\r' })));
         }
 
 

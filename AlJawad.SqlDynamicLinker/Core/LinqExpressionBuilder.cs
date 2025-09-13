@@ -85,7 +85,10 @@ namespace AlJawad.SqlDynamicLinker.Core
 
             if (entityFilter.Filters != null && entityFilter.Filters.Any())
             {
-                _expression.Append($" {entityFilter.LogicOrDefault} (");
+                //if (!String.IsNullOrEmpty(entityFilter.LogicOrDefault))
+                //{
+                    _expression.Append($" {entityFilter.LogicOrDefault} (");
+                //}
 
                 foreach (var filter in entityFilter.Filters)
                 {
@@ -97,7 +100,10 @@ namespace AlJawad.SqlDynamicLinker.Core
                     }
                 }
 
-                _expression.Append(")");
+                //if (!String.IsNullOrEmpty(entityFilter.LogicOrDefault))
+                //{
+                    _expression.Append(")");
+                //}
             }
         }
 
@@ -162,8 +168,8 @@ namespace AlJawad.SqlDynamicLinker.Core
         {
             if (string.IsNullOrWhiteSpace(entityFilter.DataName) || entityFilter.NamePropertyOfCollectionList == null)
                 return;
-
-            var tmpExpression = new StringBuilder($"{entityFilter.DataName}.Any(");
+            var paramName = "x" + (_values.Count() + 1);
+            var tmpExpression = new StringBuilder($"{entityFilter.DataName}.Any(");//{paramName} =>
             for (int i = 0; i < entityFilter.NamePropertyOfCollectionList.Count; i++)
             {
                 var nameProperty = entityFilter.NamePropertyOfCollectionList[i];
@@ -173,12 +179,14 @@ namespace AlJawad.SqlDynamicLinker.Core
 
                 if (value is JArray jArray)
                 {
+                    //tmpExpression.Append($"@{_values.Count}.Contains({paramName}.{nameProperty})");
                     tmpExpression.Append($"@{_values.Count}.Contains({nameProperty})");
-                    value = jArray.ToObject<List<object>>().ToArray();
+                    value = NormalizeValue(new EntityFilter() { Value = value });// jArray.ToObject<List<object>>().ToArray();
                 }
                 else
                 {
                     tmpExpression.Append($"@{nameProperty} {comparison} @{_values.Count}");
+                    //tmpExpression.Append($"@{paramName}.{nameProperty} {comparison} @{_values.Count}");
                 }
 
                 if (i < entityFilter.NamePropertyOfCollectionList.Count - 1)
