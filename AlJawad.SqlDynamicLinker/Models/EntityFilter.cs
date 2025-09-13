@@ -13,7 +13,7 @@ namespace AlJawad.SqlDynamicLinker.Models
         public object Value { get; set; }
 
         //Change the list of int to list of long
-        public string TypeOfArray { get; set; }
+        public bool IsLongArray { get; set; }
 
         public string NamePropertyOfCollection { get; set; }
 

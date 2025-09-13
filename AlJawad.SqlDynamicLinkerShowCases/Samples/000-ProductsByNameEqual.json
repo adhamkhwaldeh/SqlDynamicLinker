@@ -1,0 +1,6 @@
+{
+  "logic": "and",
+  "dataName": "Name",
+  "operator": "Equal",
+  "value": "Smartphone X"
+}

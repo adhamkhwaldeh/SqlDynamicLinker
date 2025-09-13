@@ -3,6 +3,7 @@ using AlJawad.SqlDynamicLinker.DynamicFilter;
 using Newtonsoft.Json;
 using AlJawad.SqlDynamicLinker.Models;
 using Newtonsoft.Json.Linq;
+using AlJawad.SqlDynamicLinker.Converters;
 
 namespace ProperMan.Infrastructure.ModelBinder
 {
@@ -15,11 +16,12 @@ namespace ProperMan.Infrastructure.ModelBinder
 
             //get value from bindingContext
             var valueproviders = bindingContext.ValueProvider;
-            var options = new System.Text.Json.JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
+            //var options = new System.Text.Json.JsonSerializerOptions
+            //{
+            //    PropertyNameCaseInsensitive = true
+            //};
 
+         
             var result = new BaseQueryableFilter();
 
             if (valueproviders.GetValue("Query").Length > 0)
@@ -42,29 +44,39 @@ namespace ProperMan.Infrastructure.ModelBinder
 
             if (valueproviders.GetValue("DynamicFilters").Length > 0)
             {
+                var settings = new JsonSerializerSettings
+                {
+                    Converters = { new EntityBaseFilterConverter() },
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
                 var dynamicList = new List<EntityBaseFilter>();
                 foreach (var item in valueproviders.GetValue("DynamicFilters").ToList())
                 {
-                    var x = JObject.Parse(item)["NamePropertyOfCollectionList"]?.ToString();
-                    var x2 = JObject.Parse(item)["namePropertyOfCollectionList"]?.ToString();
 
-                    var y = JObject.Parse(item)["Latitude"]?.ToString();
-                    var y2 = JObject.Parse(item)["latitude"]?.ToString();
+                    var newFilter = JsonConvert.DeserializeObject<EntityBaseFilter>(item.Replace("\n", ""), settings);
 
-                    if (!String.IsNullOrEmpty(x) || !String.IsNullOrEmpty(x2))
-                    {
-                        var newFilter = JsonConvert.DeserializeObject<EntityMultilpleConditionsFilter>(item.Replace("\n", ""));
-                        dynamicList.Add(newFilter);
-                    }else if (!String.IsNullOrEmpty(y) || !String.IsNullOrEmpty(y2))
-                    {
-                        var newFilter = JsonConvert.DeserializeObject<EntityGeometryFilter>(item.Replace("\n", ""));
-                        dynamicList.Add(newFilter);
-                    }
-                    else
-                    {
-                        var newFilter = JsonConvert.DeserializeObject<EntityFilter>(item.Replace("\n", ""));
-                        dynamicList.Add(newFilter);
-                    }
+                    //var x = JObject.Parse(item)["NamePropertyOfCollectionList"]?.ToString();
+                    //var x2 = JObject.Parse(item)["namePropertyOfCollectionList"]?.ToString();
+
+                    //var y = JObject.Parse(item)["Latitude"]?.ToString();
+                    //var y2 = JObject.Parse(item)["latitude"]?.ToString();
+
+                    //if (!String.IsNullOrEmpty(x) || !String.IsNullOrEmpty(x2))
+                    //{
+                    //    var newFilter = JsonConvert.DeserializeObject<EntityMultilpleConditionsFilter>(item.Replace("\n", ""));
+                    //    dynamicList.Add(newFilter);
+                    //}else if (!String.IsNullOrEmpty(y) || !String.IsNullOrEmpty(y2))
+                    //{
+                    //    var newFilter = JsonConvert.DeserializeObject<EntityGeometryFilter>(item.Replace("\n", ""));
+                    //    dynamicList.Add(newFilter);
+                    //}
+                    //else
+                    //{
+                    //    var newFilter = JsonConvert.DeserializeObject<EntityFilter>(item.Replace("\n", ""));
+                    //    dynamicList.Add(newFilter);
+                    //}
+                    dynamicList.Add(newFilter);
                 }
                 result.DynamicFilters = dynamicList;
             }

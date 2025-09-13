@@ -1,0 +1,6 @@
+{
+  "logic": "and",
+  "dataName": "Name",
+  "operator": "Contains",
+  "value": "Smartphone X"
+}

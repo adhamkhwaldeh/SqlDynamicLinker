@@ -1,0 +1,6 @@
+{
+  "logic": "and",
+  "dataName": "MainCategoryId",
+  "operator": "Contains",
+  "value": [ 1, 2, 3, 4 ]
+}

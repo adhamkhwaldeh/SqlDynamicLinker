@@ -1,0 +1,7 @@
+{
+  "logic": "and",
+  "dataName": "ProductCategories.Category",
+  "namePropertyOfCollection": "Name",
+  "operator": "Contains",
+  "value": [ "Electronics", "Books" ]
+}

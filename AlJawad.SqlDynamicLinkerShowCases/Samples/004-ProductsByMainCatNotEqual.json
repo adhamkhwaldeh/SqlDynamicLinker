@@ -1,0 +1,6 @@
+{
+  "logic": "and",
+  "dataName": "MainCategoryId",
+  "operator": "NotEqual",
+  "value": 1
+}

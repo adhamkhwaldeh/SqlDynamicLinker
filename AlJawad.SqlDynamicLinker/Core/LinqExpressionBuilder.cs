@@ -197,9 +197,25 @@ namespace AlJawad.SqlDynamicLinker.Core
         {
             if (entityFilter.Value is JArray jArray)
             {
-                return entityFilter.TypeOfArray == "long"
-                    ? jArray.ToObject<List<long>>().ToArray()
-                    : jArray.ToObject<List<object>>().ToArray();
+                if (!jArray.Any())
+                    return Array.Empty<object>(); // or null, depending on your needs
+
+                var first = jArray.First!;
+
+                return first.Type switch
+                {
+                    JTokenType.Integer =>
+                        // Decide between long or int based on value range
+                        entityFilter.IsLongArray
+                            ? jArray.ToObject<long[]>()
+                            : jArray.ToObject<int[]>(),
+
+                    JTokenType.Float => jArray.ToObject<double[]>(),
+                    JTokenType.String => jArray.ToObject<string[]>(),
+                    JTokenType.Boolean => jArray.ToObject<bool[]>(),
+                    _ => jArray.ToObject<object[]>()
+                };
+
             }
 
             return entityFilter.Value;
@@ -217,6 +233,11 @@ namespace AlJawad.SqlDynamicLinker.Core
         {
             return comparison.StartsWith("!") || comparison.StartsWith("not", StringComparison.OrdinalIgnoreCase) ? "!" : string.Empty;
         }
+
+
+        //Plan
+     
+
 
         private void HandleContainsExpression(EntityFilter entityFilter, string name, int index, string negation,object value)
         {
@@ -252,7 +273,7 @@ namespace AlJawad.SqlDynamicLinker.Core
             }
 
             // Fallback to original logic for single collection or property
-            if (entityFilter.TypeOfArray == "long")
+            if (!string.IsNullOrWhiteSpace(entityFilter.NamePropertyOfCollection))
             {
                 _expression.Append($"{name}.Any(@{index}.Contains({entityFilter.NamePropertyOfCollection}))");
             }

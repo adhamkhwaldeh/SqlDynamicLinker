@@ -1,0 +1,16 @@
+{
+  "filters": [
+    {
+      "logic": "or",
+      "dataName": "Name",
+      "operator": "StartsWith",
+      "value": "Smartphone "
+    },
+    {
+      "logic": "or",
+      "dataName": "Name",
+      "operator": "EndsWith",
+      "value": "Headphones"
+    }
+  ]
+}

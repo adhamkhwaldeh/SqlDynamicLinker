@@ -33,7 +33,6 @@ namespace AlJawad.SqlDynamicLinker.Swagger
             //    },
 
                 DataName = "exampleData",
-                TypeOfArray = "exampleArray",
                 NamePropertyOfCollection = "exampleCollection",
                 Value = 9,
             };
