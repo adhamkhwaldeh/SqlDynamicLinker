@@ -1,7 +1,0 @@
-{
-  "logic": "and",
-  "dataName": "ProductCategories",
-  "namePropertyOfCollection": "CategoryId",
-  "operator": "Contains",
-  "value": [ 1 ]
-}

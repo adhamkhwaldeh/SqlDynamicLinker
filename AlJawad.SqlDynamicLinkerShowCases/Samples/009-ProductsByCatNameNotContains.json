@@ -4,7 +4,7 @@
       "logic": "and",
       "dataName": "ProductCategories",
       "namePropertyOfCollection": "Category.Name",
-      "operator": "Contains",
+      "operator": "NotContains",
       "value": [ "Electronics", "Books" ]
     }
   ]

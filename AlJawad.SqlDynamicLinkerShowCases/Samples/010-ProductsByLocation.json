@@ -1,0 +1,11 @@
+{
+  "Filters": [
+    {
+      "DataName": "Location",
+      "Operator": "within",
+      "Latitude": 34.0522,
+      "Longitude": 118.2437,
+      "Radius": 1500
+    }
+  ]
+}

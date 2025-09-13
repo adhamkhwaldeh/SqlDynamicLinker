@@ -1,11 +1,21 @@
 {
-  "IncludeProperties": null,
+  "IncludeProperties": [
+    {
+      "PropertyName": "MainCategory"
+    },
+    {
+      "PropertyName": "ProductCategories"
+    },
+    {
+      "PropertyName": "ProductCategories.Category"
+    }
+  ],
   "Filters": [
     {
       "logic": "and",
-      "dataName": "Name",
-      "operator": "Equal",
-      "value": "Smartphone X"
+      "dataName": "MainCategoryId",
+      "operator": "NotEqual",
+      "value": 1
     }
   ],
   "DynamicSorting": [

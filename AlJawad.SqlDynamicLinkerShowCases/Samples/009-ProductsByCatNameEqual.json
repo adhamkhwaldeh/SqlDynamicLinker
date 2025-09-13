@@ -1,7 +1,0 @@
-{
-  "logic": "and",
-  "dataName": "ProductCategories.Category",
-  "namePropertyOfCollection": "Name",
-  "operator": "Equal",
-  "value": "Electronics"
-}

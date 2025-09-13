@@ -1,8 +1,12 @@
 {
-  "logic": "and",
-  "dataName": "ProductCategories",
-  "namePropertyOfCollection": "CategoryId",
+  "Filters": [
+    {
+      "logic": "and",
+      "dataName": "ProductCategories",
+      "namePropertyOfCollection": "CategoryId",
 
-  "operator": "Contains",
-  "value": [ 1, 2, 3, 4 ]
+      "operator": "Contains",
+      "value": [ 1, 2, 3, 4 ]
+    }
+  ]
 }

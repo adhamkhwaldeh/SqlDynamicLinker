@@ -1,6 +1,10 @@
 {
-  "logic": "and",
-  "dataName": "Name",
-  "operator": "Contains",
-  "value": "Smartphone X"
+  "Filters": [
+    {
+      "logic": "and",
+      "dataName": "Name",
+      "operator": "Contains",
+      "value": "Smartphone X"
+    }
+  ]
 }

@@ -135,8 +135,9 @@ namespace AlJawad.SqlDynamicLinker.Core
 
         private void WriteExpression(EntityGeometryFilter entityFilter)
         {
-            if (string.IsNullOrWhiteSpace(entityFilter.DataName) || entityFilter.NamePropertyOfCollection == null)
-                return;
+            //if (string.IsNullOrWhiteSpace(entityFilter.DataName) || entityFilter.NamePropertyOfCollection == null)
+            if (string.IsNullOrWhiteSpace(entityFilter.DataName))
+                    return;
 
             int srid = 4326; //0 or 4326 if using lat/lon
 
@@ -145,10 +146,12 @@ namespace AlJawad.SqlDynamicLinker.Core
 
 
             // Check distance to MultiPoint/Polygon/LineString geometry
-            var tmpExpression = new StringBuilder($"SpatialFunctions.Distance({entityFilter.DataName},@{_values.Count}) < @{_values.Count + 1}");
+            //var tmpExpression = new StringBuilder($"SpatialFunctions.Distance({entityFilter.DataName},@{_values.Count}) < @{_values.Count + 1}");
 
-            //var tmpExpression = new StringBuilder($"{entityFilter.DataName}.Distance(@{_values.Count}) < @{_values.Count + 1}");
-            
+
+            var tmpExpression = new StringBuilder($"{entityFilter.DataName}.IsWithinDistance(@{_values.Count}, @{_values.Count + 1})");
+
+
             _expression.Append(tmpExpression);
             _values.Add(center);
             _values.Add(entityFilter.Radius);

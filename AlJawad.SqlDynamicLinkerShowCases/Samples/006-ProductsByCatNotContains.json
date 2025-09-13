@@ -3,9 +3,9 @@
     {
       "logic": "and",
       "dataName": "ProductCategories",
-      "namePropertyOfCollection": "Category.Name",
+      "namePropertyOfCollection": "CategoryId",
       "operator": "Contains",
-      "value": [ "Electronics", "Books" ]
+      "value": [ 1 ]
     }
   ]
 }

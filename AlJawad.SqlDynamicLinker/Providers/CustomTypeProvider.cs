@@ -12,6 +12,8 @@ public class CustomTypeProvider : DefaultDynamicLinqCustomTypeProvider
         types.Add(typeof(DbContextCustomFunctions));
         types.Add(typeof(SpatialFunctions));
 
+        types.Add(typeof(Geometry));  // <- Needed for Distance, Intersects, etc.
+
         //types.Add(typeof(Geometry));  // <- Needed for Distance, Intersects, etc.
 
         return types;

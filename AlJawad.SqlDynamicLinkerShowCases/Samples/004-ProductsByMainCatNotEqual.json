@@ -1,6 +1,10 @@
 {
-  "logic": "and",
-  "dataName": "MainCategoryId",
-  "operator": "NotEqual",
-  "value": 1
+  "Filters": [
+    {
+      "logic": "and",
+      "dataName": "MainCategoryId",
+      "operator": "NotEqual",
+      "value": 1
+    }
+  ]
 }

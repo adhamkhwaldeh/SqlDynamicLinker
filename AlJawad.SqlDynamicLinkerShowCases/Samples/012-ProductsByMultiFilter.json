@@ -1,0 +1,17 @@
+//Not Fully tested
+//{
+//  "Filters": [
+//    {
+//      "InnerLogicList": [ "or", "or", "and" ],
+//      "ValueList": [ "Smartphone", "Headphones", "MainCategoyId" ],
+//      "OperatorList": [ "StartsWith", "EndsWith", "Equal" ],
+      
+//      "NamePropertyOfCollectionList": [
+//        "Name",
+//        "Name",
+//        1
+//      ]
+//    }
+
+//  ]
+//}

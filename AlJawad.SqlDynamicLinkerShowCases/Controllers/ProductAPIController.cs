@@ -10,6 +10,8 @@ using AlJawad.SqlDynamicLinker.Models;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
 using AlJawad.SqlDynamicLinker.Extensions;
+using Newtonsoft.Json;
+using AlJawad.SqlDynamicLinker.Converters;
 
 namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
 {
@@ -43,5 +45,23 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
             return Ok(categories);
         }
 
+        // GET: api/producttest/filter-from-file/{fileName}
+        [HttpGet("filter-from-file/{fileName}")]
+        public IActionResult GetProductsFromFile(string fileName)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Samples", fileName + ".json");
+            if (!System.IO.File.Exists(path))
+            {
+                return NotFound($"Sample file not found: {fileName}");
+            }
+
+            var json = System.IO.File.ReadAllText(path);
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new EntityBaseFilterConverter());
+            var filter = JsonConvert.DeserializeObject<BaseQueryableFilter>(json, settings);
+
+            var products = _repository.GetProducts().Filter(filter);
+            return Ok(products);
+        }
     }
 }
