@@ -1,13 +1,13 @@
 {
   "IncludeProperties": [
     {
-      "PropertyName": "MainCategory"
+      "dataName": "MainCategory"
     },
     {
-      "PropertyName": "ProductCategories"
+      "dataName": "ProductCategories"
     },
     {
-      "PropertyName": "ProductCategories.Category"
+      "dataName": "ProductCategories.Category"
     }
   ],
   "Filters": [

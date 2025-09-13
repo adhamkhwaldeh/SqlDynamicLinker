@@ -8,8 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.SqlServer;
@@ -84,6 +85,23 @@ namespace AlJawad.SqlDynamicLinker.Extensions
             //query.OrderBy(config, builder.ToString()).ToList();
             return query.OrderBy(config,builder.ToString());
         }
+
+
+        public static IQueryable<T> Includes<T>(this IQueryable<T> query, ColumnBase columnBase)
+            where T : class
+        {
+            return columnBase == null ? query : Includes(query, new[] { columnBase });
+        }
+
+        public static IQueryable<T> Includes<T>(this IQueryable<T> query, IEnumerable<ColumnBase> includes)
+                 where T : class
+        {
+          if (includes == null)
+                return query;
+          return  includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty.DataName));
+        }
+
+
 
         public static IQueryable<T> IncludeIf<T>(this IQueryable<T> source, bool condition, string path)
            where T : class

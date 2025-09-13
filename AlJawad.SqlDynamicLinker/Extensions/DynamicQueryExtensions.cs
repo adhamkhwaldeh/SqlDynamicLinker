@@ -18,12 +18,15 @@ namespace AlJawad.SqlDynamicLinker.Extensions
     {
 
         public static IQueryable<T> Filter<T>(this IQueryable<T> query, BaseQueryableFilter filter)
+        where T : class
         {
             if (filter == null)
                 return query;
 
             var builder = new LinqExpressionBuilder();
             builder.Build(filter.DynamicFilters);
+            query.Sort(filter.DynamicSorting);
+            query.Includes(filter.IncludeProperties);
             return builder.Filter(query);
         }
 
@@ -62,6 +65,7 @@ namespace AlJawad.SqlDynamicLinker.Extensions
 
                 //ResolveTypesBySimpleName = true,
             };
+            
             //xx.NumberParseCulture = CultureInfo.
             //return query.Where("@0.Contains(Id)", intList);
             return query.Where(config, predicate, parameters);
