@@ -7,6 +7,8 @@
   </PropertyGroup>
 	
 	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="" />
+		
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.4.9" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -32,9 +34,10 @@
 		<!-- or netstandard2.1, etc. -->
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>AlJawad.SqlDynamicLinker</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 		<Authors>Adham al khawada</Authors>
 		<Company>Adham al khawalda</Company>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Description>A .NET library designed to delegate powerful control to frontend developers, such as sorting, including sub models, and collection and comprehensive filtration for simple and complex queries from the frontend side</Description>
 		<PackageTags>csharp;dotnet;library</PackageTags>
 		<RepositoryUrl>https://github.com/adhamkhwaldeh/SqlDynamicLinker</RepositoryUrl>
