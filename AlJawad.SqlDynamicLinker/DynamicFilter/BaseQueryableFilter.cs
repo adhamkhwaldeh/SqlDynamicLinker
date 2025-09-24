@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProperMan.Infrastructure.ModelBinder;
+using AlJawad.SqlDynamicLinker.ModelBinder;
 using System;
 using System.Collections.Generic;
 using System.Text;

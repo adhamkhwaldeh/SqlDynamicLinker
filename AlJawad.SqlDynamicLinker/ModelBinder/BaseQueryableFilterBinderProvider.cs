@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProperMan.Infrastructure.ModelBinder
+namespace AlJawad.SqlDynamicLinker.ModelBinder
 {
     public class BaseQueryableFilterBinderProvider : IModelBinderProvider
     {

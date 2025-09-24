@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 
-namespace ProperMan.Infrastructure.ModelBinder
+namespace AlJawad.SqlDynamicLinker.ModelBinder
 {
     public class BasePagingFilterBinderProvider : IModelBinderProvider
     {

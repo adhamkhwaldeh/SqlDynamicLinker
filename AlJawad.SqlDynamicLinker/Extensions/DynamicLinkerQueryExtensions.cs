@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.SqlServer;
-using ProperMan.Infrastructure.Extensions;
+using AlJawad.SqlDynamicLinker.Extensions;
 using System.Text.Json.Nodes;
 
 namespace AlJawad.SqlDynamicLinker.Extensions

@@ -5,7 +5,7 @@ using AlJawad.SqlDynamicLinker.Models;
 using Newtonsoft.Json.Linq;
 using AlJawad.SqlDynamicLinker.Converters;
 
-namespace ProperMan.Infrastructure.ModelBinder
+namespace AlJawad.SqlDynamicLinker.ModelBinder
 {
     public class BaseQueryableFilterModelBinder : IModelBinder
     {

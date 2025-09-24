@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using AlJawad.SqlDynamicLinker.Models;
 using AlJawad.SqlDynamicLinker.DynamicFilter;
 
-namespace ProperMan.Infrastructure.ModelBinder
+namespace AlJawad.SqlDynamicLinker.ModelBinder
 {
 
     public class BasePagingFilterModelBinder : IModelBinder

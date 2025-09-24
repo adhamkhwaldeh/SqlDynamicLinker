@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace ProperMan.Infrastructure.Extensions
+namespace AlJawad.SqlDynamicLinker.Extensions
 {
     public static class DbContextCustomFunctions
     {

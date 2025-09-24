@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using AlJawad.SqlDynamicLinker.Models;
 using AlJawad.SqlDynamicLinker.Enums;
 
-namespace ProperMan.Domain.Profiles
+namespace AlJawad.SqlDynamicLinker.Profiles
 {
    
     public class DataTablesRequestPagingFilterProfile : AutoMapper.Profile

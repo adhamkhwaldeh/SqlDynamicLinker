@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.Storage;
 using NetTopologySuite.Geometries;
-using ProperMan.Infrastructure.Extensions;
+using AlJawad.SqlDynamicLinker.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

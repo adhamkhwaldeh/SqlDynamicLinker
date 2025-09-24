@@ -101,7 +101,7 @@ public class ProductController : ControllerBase
 
 The `BaseQueryableFilter` is the main object that you'll use to define your queries. It has the following properties:
 
-- `Filters` (array): An array of filter objects.
+- `DynamicFilters` (array): An array of filter objects.
 - `DynamicSorting` (array): An array of sorting objects.
 - `IncludeProperties` (array): An array of objects to specify which related entities to include.
 
@@ -113,7 +113,7 @@ Here is a full example of a `BaseQueryableFilter` object:
     { "dataName": "MainCategory" },
     { "dataName": "ProductCategories.Category" }
   ],
-  "Filters": [
+  "DynamicFilters": [
     {
       "logic": "and",
       "dataName": "Name",
@@ -139,7 +139,7 @@ Here is a full example of a `BaseQueryableFilter` object:
 
 ## Filtering
 
-The `Filters` array contains one or more filter objects. Each object defines a condition to apply to the query.
+The `DynamicFilters` array contains one or more filter objects. Each object defines a condition to apply to the query.
 
 ### Simple Filters
 
@@ -154,7 +154,7 @@ A simple filter object has the following properties:
 
 ```json
 {
-  "Filters": [
+  "DynamicFilters": [
     {
       "dataName": "Name",
       "operator": "eq",
@@ -192,7 +192,7 @@ The library supports filtering based on geographic location. A geometry filter o
 
 ```json
 {
-  "Filters": [
+  "DynamicFilters": [
     {
       "DataName": "Location",
       "Operator": "within",

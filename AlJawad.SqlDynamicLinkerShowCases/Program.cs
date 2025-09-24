@@ -1,5 +1,5 @@
 using AlJawad.SqlDynamicLinkerShowCases.Repositories;
-using ProperMan.Infrastructure.ModelBinder;
+using AlJawad.SqlDynamicLinker.ModelBinder;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

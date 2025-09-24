@@ -1,5 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
-using ProperMan.Infrastructure.Extensions;
+using AlJawad.SqlDynamicLinker.Extensions;
 using System.Linq.Dynamic.Core.CustomTypeProviders;
 using NetTopologySuite.Geometries;
 using AlJawad.SqlDynamicLinker.Extensions;
