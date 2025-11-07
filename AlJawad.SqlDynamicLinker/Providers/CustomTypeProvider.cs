@@ -1,14 +1,13 @@
 ﻿using NetTopologySuite.Geometries;
 using AlJawad.SqlDynamicLinker.Extensions;
 using System.Linq.Dynamic.Core.CustomTypeProviders;
-using NetTopologySuite.Geometries;
-using AlJawad.SqlDynamicLinker.Extensions;
 
 public class CustomTypeProvider : DefaultDynamicLinqCustomTypeProvider
 {
     public override HashSet<Type> GetCustomTypes()
     {
         var types = base.GetCustomTypes();
+       
         types.Add(typeof(DbContextCustomFunctions));
         types.Add(typeof(SpatialFunctions));
 
@@ -18,4 +17,5 @@ public class CustomTypeProvider : DefaultDynamicLinqCustomTypeProvider
 
         return types;
     }
+
 }

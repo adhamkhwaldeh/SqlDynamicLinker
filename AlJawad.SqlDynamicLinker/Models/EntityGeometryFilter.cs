@@ -14,6 +14,8 @@ namespace AlJawad.SqlDynamicLinker.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        public bool IsMultiPoint { get; set; }
+
         public double Radius { get; set; } //30000;  30 km in geometry units (must match coordinate system)
 
         public string NamePropertyOfCollection { get; set; }

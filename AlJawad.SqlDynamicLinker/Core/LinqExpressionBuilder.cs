@@ -55,6 +55,7 @@ namespace AlJawad.SqlDynamicLinker.Core
             {
                 Visit(new EntityFilter()
                 {
+
                     Filters = filters
                 });
             }
@@ -87,7 +88,7 @@ namespace AlJawad.SqlDynamicLinker.Core
             {
                 //if (!String.IsNullOrEmpty(entityFilter.LogicOrDefault))
                 //{
-                    _expression.Append($" {entityFilter.LogicOrDefault} (");
+                _expression.Append($" {entityFilter.LogicOrDefault} (");
                 //}
 
                 foreach (var filter in entityFilter.Filters)
@@ -102,7 +103,7 @@ namespace AlJawad.SqlDynamicLinker.Core
 
                 //if (!String.IsNullOrEmpty(entityFilter.LogicOrDefault))
                 //{
-                    _expression.Append(")");
+                _expression.Append(")");
                 //}
             }
         }
@@ -129,7 +130,7 @@ namespace AlJawad.SqlDynamicLinker.Core
             }
             else if (comparison.EndsWith(EntityFilterOperators.Contains, StringComparison.OrdinalIgnoreCase))
             {
-                HandleContainsExpression(entityFilter, name, index, negation,value);
+                HandleContainsExpression(entityFilter, name, index, negation, value);
             }
             else
             {
@@ -143,26 +144,31 @@ namespace AlJawad.SqlDynamicLinker.Core
         {
             //if (string.IsNullOrWhiteSpace(entityFilter.DataName) || entityFilter.NamePropertyOfCollection == null)
             if (string.IsNullOrWhiteSpace(entityFilter.DataName))
-                    return;
+                return;
 
             int srid = 4326; //0 or 4326 if using lat/lon
 
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: srid);
             var center = geometryFactory.CreatePoint(new Coordinate(entityFilter.Longitude, entityFilter.Latitude));
 
+            //var center = new Point(11.573, 48.137) { SRID = srid };
 
             // Check distance to MultiPoint/Polygon/LineString geometry
             //var tmpExpression = new StringBuilder($"SpatialFunctions.Distance({entityFilter.DataName},@{_values.Count}) < @{_values.Count + 1}");
 
 
-            var tmpExpression = new StringBuilder($"{entityFilter.DataName}.IsWithinDistance(@{_values.Count}, @{_values.Count + 1})");
-
+            StringBuilder tmpExpression = (entityFilter.IsMultiPoint ?
+               new StringBuilder($"{entityFilter.DataName}.Any(x => x.IsWithinDistance(@{_values.Count}, @{_values.Count + 1}))")
+             : new StringBuilder($"{entityFilter.DataName}.IsWithinDistance(@{_values.Count}, @{_values.Count + 1})"));
 
             _expression.Append(tmpExpression);
             _values.Add(center);
             _values.Add(entityFilter.Radius);
-
         }
+    
+        // var tmpExpression = new StringBuilder($" cast({entityFilter.DataName}, Geometry).IsWithinDistance(@{_values.Count}, @{_values.Count + 1})");
+
+      
 
         private void WriteExpression(EntityMultilpleConditionsFilter entityFilter)
         {

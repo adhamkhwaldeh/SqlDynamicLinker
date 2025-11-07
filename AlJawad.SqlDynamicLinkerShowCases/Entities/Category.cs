@@ -1,4 +1,6 @@
-﻿namespace AlJawad.SqlDynamicLinkerShowCases.Entities
+﻿using NetTopologySuite.Geometries;
+
+namespace AlJawad.SqlDynamicLinkerShowCases.Entities
 {
     public class Category
     {
@@ -6,6 +8,7 @@
         public string Name { get; set; }       // Category name (e.g. "Electronics")
         public string Description { get; set; }// Optional details
 
+        public MultiPoint Locations { get; set; }
         // Navigation
         //public ICollection<ProductCategory> ProductCategories { get; set; }
     }

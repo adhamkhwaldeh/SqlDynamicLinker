@@ -12,24 +12,29 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Repositories
 
         public ProductRepository()
         {
+
+            Point p1 = new Point(11.573, 48.137) { SRID = 4326 };
+            Point p2 = new Point(11.573, 48.137) { SRID = 4326 };
+            Point p3 = new Point(11.573, 48.137) { SRID = 4326 };
+            var points = new List<Point> { p1, p2, p3 };
             // Categories
             var _categoryList = new List<Category>
         {
-            new Category { Id = 1, Name = "Electronics", Description = "Devices and gadgets" },
-            new Category { Id = 2, Name = "Books", Description = "Printed and digital books" },
-            new Category { Id = 3, Name = "Clothing", Description = "Apparel and fashion items" },
-            new Category { Id = 4, Name = "Home & Kitchen", Description = "Household essentials" },
-            new Category { Id = 5, Name = "Sports", Description = "Sporting goods and equipment" },
-            new Category { Id = 6, Name = "Toys", Description = "Children’s toys and games" },
-            new Category { Id = 7, Name = "Beauty", Description = "Cosmetics and personal care" },
-            new Category { Id = 8, Name = "Automotive", Description = "Car accessories and tools" },
-            new Category { Id = 9, Name = "Music", Description = "Instruments and audio gear" },
-            new Category { Id = 10, Name = "Office Supplies", Description = "Work and study essentials" }
+            new Category { Id = 1, Name = "Electronics", Description = "Devices and gadgets",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 2, Name = "Books", Description = "Printed and digital books",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 3, Name = "Clothing", Description = "Apparel and fashion items",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 4, Name = "Home & Kitchen", Description = "Household essentials",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 5, Name = "Sports", Description = "Sporting goods and equipment",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 6, Name = "Toys", Description = "Children’s toys and games",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 7, Name = "Beauty", Description = "Cosmetics and personal care",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 8, Name = "Automotive", Description = "Car accessories and tools",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 9, Name = "Music", Description = "Instruments and audio gear",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }},
+            new Category { Id = 10, Name = "Office Supplies", Description = "Work and study essentials",Locations =  new MultiPoint(points.ToArray()) { SRID = 4326 }}
         };
             _categories = _categoryList.AsQueryable();
 
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-
+            
             // Products
             _products = new List<Product>
         {

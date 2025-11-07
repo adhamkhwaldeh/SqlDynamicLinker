@@ -61,11 +61,11 @@ namespace AlJawad.SqlDynamicLinker.Extensions
                 ResolveTypesBySimpleName = true,
                 AllowNewToEvaluateAnyType = true,
 
-                CustomTypeProvider = new CustomTypeProvider()
-
+                CustomTypeProvider = new CustomTypeProvider(),
+                
                 //ResolveTypesBySimpleName = true,
             };
-            
+
             //xx.NumberParseCulture = CultureInfo.
             //return query.Where("@0.Contains(Id)", intList);
             return query.Where(config, predicate, parameters);

@@ -39,9 +39,9 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
 
         // GET: api/productapi/categories
         [HttpGet("categories")]
-        public IActionResult GetAllCategories()
+        public IActionResult GetAllCategories([FromQuery] BaseQueryableFilter baseFilter)
         {
-            var categories = _repository.GetCategories();
+            var categories = _repository.GetCategories().Filter(baseFilter);
             return Ok(categories);
         }
 
