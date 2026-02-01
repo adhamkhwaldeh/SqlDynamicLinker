@@ -82,6 +82,9 @@ namespace AlJawad.SqlDynamicLinker.Core
                 case EntityMultilpleConditionsFilter multipleConditionsFilter:
                     WriteExpression(multipleConditionsFilter);
                     break;
+                case EntityBoundingBoxFilter filter:
+                    WriteExpression(filter);
+                    break;
             }
 
             if (entityFilter.Filters != null && entityFilter.Filters.Any())
@@ -164,6 +167,32 @@ namespace AlJawad.SqlDynamicLinker.Core
             _expression.Append(tmpExpression);
             _values.Add(center);
             _values.Add(entityFilter.Radius);
+        }
+
+        private void WriteExpression(EntityBoundingBoxFilter entityFilter)
+        {
+            if (string.IsNullOrWhiteSpace(entityFilter.DataName))
+                return;
+
+            int srid = 4326;
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: srid);
+
+            var coords = new Coordinate[]
+            {
+                new Coordinate(entityFilter.MinLongitude, entityFilter.MinLatitude),
+                new Coordinate(entityFilter.MaxLongitude, entityFilter.MinLatitude),
+                new Coordinate(entityFilter.MaxLongitude, entityFilter.MaxLatitude),
+                new Coordinate(entityFilter.MinLongitude, entityFilter.MaxLatitude),
+                new Coordinate(entityFilter.MinLongitude, entityFilter.MinLatitude)
+            };
+            var bbox = geometryFactory.CreatePolygon(coords);
+
+            StringBuilder tmpExpression = (entityFilter.IsMultiPoint ?
+               new StringBuilder($"{entityFilter.DataName}.Any(x => x.Intersects(@{_values.Count}))")
+             : new StringBuilder($"{entityFilter.DataName}.Intersects(@{_values.Count})"));
+
+            _expression.Append(tmpExpression);
+            _values.Add(bbox);
         }
     
         // var tmpExpression = new StringBuilder($" cast({entityFilter.DataName}, Geometry).IsWithinDistance(@{_values.Count}, @{_values.Count + 1})");

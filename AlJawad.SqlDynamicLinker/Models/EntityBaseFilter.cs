@@ -17,6 +17,7 @@ namespace AlJawad.SqlDynamicLinker.Models
     [JsonDerivedType(typeof(EntityFilter), "EntityFilter")]
     [JsonDerivedType(typeof(EntityMultilpleConditionsFilter), "EntityMultilpleConditionsFilter")]
     [JsonDerivedType(typeof(EntityGeometryFilter), "EntityGeometryFilter")]
+    [JsonDerivedType(typeof(EntityBoundingBoxFilter), "EntityBoundingBoxFilter")]
     //[JsonConverter(typeof(FilterBaseJsonConverter))]
 
     //[JsonPolymorphic(IgnoreUnrecognizedTypeDiscriminators = true,
