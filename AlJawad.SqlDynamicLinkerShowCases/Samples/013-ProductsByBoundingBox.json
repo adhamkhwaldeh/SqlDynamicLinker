@@ -1,0 +1,11 @@
+{
+  "DynamicFilters": [
+    {
+      "DataName": "Location",
+      "MinLatitude": 34.0,
+      "MaxLatitude": 35.0,
+      "MinLongitude": 118.0,
+      "MaxLongitude": 119.0
+    }
+  ]
+}
