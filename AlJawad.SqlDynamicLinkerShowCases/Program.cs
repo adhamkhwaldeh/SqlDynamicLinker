@@ -1,6 +1,13 @@
 using AlJawad.SqlDynamicLinkerShowCases.Repositories;
 using AlJawad.SqlDynamicLinker.ModelBinder;
 using System.Reflection;
+using AlJawad.SqlDynamicLinkerShowCases.DB;
+using Microsoft.EntityFrameworkCore;
+using AlJawad.SqlDynamicLinker;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using AlJawad.SqlDynamicLinker.Extensions;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,15 +28,24 @@ builder.Services.AddControllers().AddJsonOptions(
          options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
      }).ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; });
 
-
-builder.Services.AddControllers(options =>
-{
-    options.ModelBinderProviders.Add(new BaseQueryableFilterBinderProvider());
-    options.ModelBinderProviders.Add(new BasePagingFilterBinderProvider());
-});
+builder.Services.InitializerSqlDynamicLinker();
 
 // Register your repository as singleton (so dummy data persists)
 builder.Services.AddSingleton<ProductRepository>();
+
+// Register AppDbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlServerOptionsAction =>
+        {
+            sqlServerOptionsAction.CommandTimeout(1200);
+            sqlServerOptionsAction.UseNetTopologySuite();
+        }).UseSpatialExtensions();
+}
+    );
+
 
 // Add Swagger
 
@@ -62,6 +78,8 @@ builder.Services.AddMvc()
 
 
 builder.Services.AddControllersWithViews(); // add MVC
+
+
 
 var app = builder.Build();
 
@@ -109,5 +127,17 @@ app.MapControllerRoute(
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated(); // or Migrate()
+    ProductRepositorySeeder.Seed(db);
+}
+
+foreach (var sd in builder.Services.Where(s => s.ServiceType == typeof(IConventionSetPlugin)))
+{
+    Console.WriteLine("Registered plugin: " + sd.ImplementationType?.FullName);
+}
 
 app.Run();

@@ -12,6 +12,7 @@ using AutoMapper;
 using AlJawad.SqlDynamicLinker.Extensions;
 using Newtonsoft.Json;
 using AlJawad.SqlDynamicLinker.Converters;
+using AlJawad.SqlDynamicLinkerShowCases.DB;
 
 namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
 {
@@ -22,9 +23,11 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
         private readonly ProductRepository _repository;
 
         private readonly IMapper _mapper;
-        
-        public ProductAPIController(IMapper mapper,ProductRepository repository)
+        private readonly AppDbContext _appDbContext;
+
+        public ProductAPIController(IMapper mapper, AppDbContext appDbContext, ProductRepository repository)
         {
+            _appDbContext = appDbContext;
             _repository = repository;
             _mapper = mapper;
         }
@@ -41,7 +44,10 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
         [HttpGet("categories")]
         public IActionResult GetAllCategories([FromQuery] BaseQueryableFilter baseFilter)
         {
-            var categories = _repository.GetCategories().Filter(baseFilter);
+            //var categories = _appDbContext.Categories.ToList().AsQueryable().Filter(baseFilter).ToList();
+            var categories = _appDbContext.Categories.Filter(baseFilter);
+
+            //var categories = _repository.GetCategories().Filter(baseFilter);
             return Ok(categories);
         }
 

@@ -16,7 +16,7 @@ namespace AlJawad.SqlDynamicLinker.Extensions
         public static double Distance(Geometry geom1, Geometry geom2)
         => throw new NotImplementedException(); // EF Core will translate this    
 
-        public static ModelBuilder AddCustomSpatialFunctions(this ModelBuilder modelBuilder)
+        public static ModelBuilder Register(this ModelBuilder modelBuilder)
         {
             var distanceMethod = typeof(SpatialFunctions)
                 .GetMethod(nameof(SpatialFunctions.Distance), new[] { typeof(Geometry), typeof(Geometry) });

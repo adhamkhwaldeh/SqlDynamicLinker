@@ -13,6 +13,8 @@ public class CustomTypeProvider : DefaultDynamicLinqCustomTypeProvider
 
         types.Add(typeof(Geometry));  // <- Needed for Distance, Intersects, etc.
 
+        types.Add(typeof(SpatialFunctions)); // Register your static class
+
         //types.Add(typeof(Geometry));  // <- Needed for Distance, Intersects, etc.
 
         return types;

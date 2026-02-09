@@ -158,7 +158,12 @@ namespace AlJawad.SqlDynamicLinker.Core
 
 
             StringBuilder tmpExpression = (entityFilter.IsMultiPoint ?
-               new StringBuilder($"{entityFilter.DataName}.Any(x => x.IsWithinDistance(@{_values.Count}, @{_values.Count + 1}))")
+             new StringBuilder($"SpatialFunctions.Distance({entityFilter.DataName},@{_values.Count}) < @{_values.Count + 1}")
+             
+            //new StringBuilder($" {entityFilter.DataName} != null and {entityFilter.DataName}.Geometries.Any(x => x.Distance(@{_values.Count}) < @{_values.Count + 1})")
+             //new StringBuilder($" {entityFilter.DataName} != null and {entityFilter.DataName}.Any(x => x.Distance(@{_values.Count}) < @{_values.Count + 1})")
+             //new StringBuilder($"{entityFilter.DataName}.Any(x => x.Distance(@{_values.Count}) < @{_values.Count + 1})")
+             //new StringBuilder($"{entityFilter.DataName}.Any(x => x.IsWithinDistance(@{_values.Count}, @{_values.Count + 1}))")
              : new StringBuilder($"{entityFilter.DataName}.IsWithinDistance(@{_values.Count}, @{_values.Count + 1})"));
 
             _expression.Append(tmpExpression);
