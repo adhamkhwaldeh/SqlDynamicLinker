@@ -30,7 +30,7 @@ namespace AlJawad.SqlDynamicLinker.Extensions
             return builder.Filter(query);
         }
 
-        public static IQueryable<T> Filter<T>(this IQueryable<T> query, IEnumerable<EntityFilter> filter)
+        public static IQueryable<T> Filter<T>(this IQueryable<T> query, IEnumerable<EntityBaseFilter> filter)
         {
             if (filter == null)
                 return query;
@@ -40,7 +40,7 @@ namespace AlJawad.SqlDynamicLinker.Extensions
             return builder.Filter(query);
         }
 
-        public static IQueryable<T> Filter<T>(this IQueryable<T> query, EntityFilter filter)
+        public static IQueryable<T> Filter<T>(this IQueryable<T> query, EntityBaseFilter filter)
         {
             if (filter == null)
                 return query;
