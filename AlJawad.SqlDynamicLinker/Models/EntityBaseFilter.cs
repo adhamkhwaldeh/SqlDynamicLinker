@@ -40,5 +40,6 @@ namespace AlJawad.SqlDynamicLinker.Models
         //public string LogicOrDefault => string.IsNullOrWhiteSpace(Logic) ? EntityFilterLogic.And : Logic;
         public string LogicOrDefault => string.IsNullOrWhiteSpace(Logic) ? "" : Logic;
 
+        public bool? IgnoreCase { get; set; }
     }
 }
