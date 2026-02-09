@@ -82,6 +82,9 @@ namespace AlJawad.SqlDynamicLinker.Core
                 case EntityMultilpleConditionsFilter multipleConditionsFilter:
                     WriteExpression(multipleConditionsFilter);
                     break;
+                case EntityBoundingBoxFilter filter:
+                    WriteExpression(filter);
+                    break;
             }
 
             if (entityFilter.Filters != null && entityFilter.Filters.Any())
@@ -113,28 +116,34 @@ namespace AlJawad.SqlDynamicLinker.Core
             if (string.IsNullOrWhiteSpace(entityFilter.DataName))
                 return;
 
+            var ignoreCase = entityFilter.IgnoreCase ?? SqlDynamicLinkerConfig.DefaultIgnoreCase;
             var index = _values.Count;
             var name = entityFilter.DataName;
-            var value = NormalizeValue(entityFilter);
+
+            bool shouldApplyIgnoreCase = ignoreCase && IsIgnoreCaseSupported(entityFilter.Operator);
+
+            var value = NormalizeValue(entityFilter.Value, shouldApplyIgnoreCase, entityFilter.IsLongArray);
 
             var comparison = GetComparisonOperator(entityFilter.Operator);
             var negation = GetNegation(comparison);
 
+            string propertyExpression = shouldApplyIgnoreCase ? $"{name}.ToLower()" : name;
+
             if (comparison.EndsWith(EntityFilterOperators.StartsWith, StringComparison.OrdinalIgnoreCase))
             {
-                _expression.Append($"{negation}{name}.StartsWith(@{index})");
+                _expression.Append($"{negation}{propertyExpression}.StartsWith(@{index})");
             }
             else if (comparison.EndsWith(EntityFilterOperators.EndsWith, StringComparison.OrdinalIgnoreCase))
             {
-                _expression.Append($"{negation}{name}.EndsWith(@{index})");
+                _expression.Append($"{negation}{propertyExpression}.EndsWith(@{index})");
             }
             else if (comparison.EndsWith(EntityFilterOperators.Contains, StringComparison.OrdinalIgnoreCase))
             {
-                HandleContainsExpression(entityFilter, name, index, negation, value);
+                HandleContainsExpression(entityFilter, name, index, negation, value, shouldApplyIgnoreCase);
             }
             else
             {
-                _expression.Append($"{name} {comparison} @{index}");
+                _expression.Append($"{propertyExpression} {comparison} @{index}");
             }
 
             _values.Add(value);
@@ -170,6 +179,32 @@ namespace AlJawad.SqlDynamicLinker.Core
             _values.Add(center);
             _values.Add(entityFilter.Radius);
         }
+
+        private void WriteExpression(EntityBoundingBoxFilter entityFilter)
+        {
+            if (string.IsNullOrWhiteSpace(entityFilter.DataName))
+                return;
+
+            int srid = 4326;
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: srid);
+
+            var coords = new Coordinate[]
+            {
+                new Coordinate(entityFilter.MinLongitude, entityFilter.MinLatitude),
+                new Coordinate(entityFilter.MaxLongitude, entityFilter.MinLatitude),
+                new Coordinate(entityFilter.MaxLongitude, entityFilter.MaxLatitude),
+                new Coordinate(entityFilter.MinLongitude, entityFilter.MaxLatitude),
+                new Coordinate(entityFilter.MinLongitude, entityFilter.MinLatitude)
+            };
+            var bbox = geometryFactory.CreatePolygon(coords);
+
+            StringBuilder tmpExpression = (entityFilter.IsMultiPoint ?
+               new StringBuilder($"{entityFilter.DataName}.Any(x => x.Intersects(@{_values.Count}))")
+             : new StringBuilder($"{entityFilter.DataName}.Intersects(@{_values.Count})"));
+
+            _expression.Append(tmpExpression);
+            _values.Add(bbox);
+        }
     
         // var tmpExpression = new StringBuilder($" cast({entityFilter.DataName}, Geometry).IsWithinDistance(@{_values.Count}, @{_values.Count + 1})");
 
@@ -179,25 +214,48 @@ namespace AlJawad.SqlDynamicLinker.Core
         {
             if (string.IsNullOrWhiteSpace(entityFilter.DataName) || entityFilter.NamePropertyOfCollectionList == null)
                 return;
+
+            var ignoreCase = entityFilter.IgnoreCase ?? SqlDynamicLinkerConfig.DefaultIgnoreCase;
             var paramName = "x" + (_values.Count() + 1);
             var tmpExpression = new StringBuilder($"{entityFilter.DataName}.Any(");//{paramName} =>
             for (int i = 0; i < entityFilter.NamePropertyOfCollectionList.Count; i++)
             {
                 var nameProperty = entityFilter.NamePropertyOfCollectionList[i];
-                var comparison = entityFilter.OperatorList[i];
+                var originalOperator = entityFilter.OperatorList[i];
                 var value = entityFilter.ValueList[i];
                 var logic = entityFilter.InnerLogicList[i];
 
-                if (value is JArray jArray)
+                bool shouldApplyIgnoreCase = ignoreCase && IsIgnoreCaseSupported(originalOperator);
+
+                value = NormalizeValue(value, shouldApplyIgnoreCase);
+
+                var comparison = GetComparisonOperator(originalOperator);
+                var negation = GetNegation(comparison);
+
+                string propertyExpression = shouldApplyIgnoreCase ? $"{nameProperty}.ToLower()" : nameProperty;
+
+                if (value is JArray || value is Array)
                 {
-                    //tmpExpression.Append($"@{_values.Count}.Contains({paramName}.{nameProperty})");
-                    tmpExpression.Append($"@{_values.Count}.Contains({nameProperty})");
-                    value = NormalizeValue(new EntityFilter() { Value = value });// jArray.ToObject<List<object>>().ToArray();
+                    tmpExpression.Append($"{negation}@{_values.Count}.Contains({propertyExpression})");
                 }
                 else
                 {
-                    tmpExpression.Append($"@{nameProperty} {comparison} @{_values.Count}");
-                    //tmpExpression.Append($"@{paramName}.{nameProperty} {comparison} @{_values.Count}");
+                    if (comparison.EndsWith(EntityFilterOperators.StartsWith, StringComparison.OrdinalIgnoreCase))
+                    {
+                        tmpExpression.Append($"{negation}{propertyExpression}.StartsWith(@{_values.Count})");
+                    }
+                    else if (comparison.EndsWith(EntityFilterOperators.EndsWith, StringComparison.OrdinalIgnoreCase))
+                    {
+                        tmpExpression.Append($"{negation}{propertyExpression}.EndsWith(@{_values.Count})");
+                    }
+                    else if (comparison.EndsWith(EntityFilterOperators.Contains, StringComparison.OrdinalIgnoreCase))
+                    {
+                        tmpExpression.Append($"{negation}{propertyExpression}.Contains(@{_values.Count})");
+                    }
+                    else
+                    {
+                        tmpExpression.Append($"{propertyExpression} {comparison} @{_values.Count}");
+                    }
                 }
 
                 if (i < entityFilter.NamePropertyOfCollectionList.Count - 1)
@@ -215,20 +273,36 @@ namespace AlJawad.SqlDynamicLinker.Core
             _expression.Append(tmpExpression);
         }
 
-        private object NormalizeValue(EntityFilter entityFilter)
+        private bool IsIgnoreCaseSupported(string op)
         {
-            if (entityFilter.Value is JArray jArray)
+            if (string.IsNullOrWhiteSpace(op)) return true; // default is eq
+
+            return op.Equals(EntityFilterOperators.Equal, StringComparison.OrdinalIgnoreCase) ||
+                   op.Equals(EntityFilterOperators.NotEqual, StringComparison.OrdinalIgnoreCase) ||
+                   op.Equals(EntityFilterOperators.Contains, StringComparison.OrdinalIgnoreCase) ||
+                   op.Equals(EntityFilterOperators.StartsWith, StringComparison.OrdinalIgnoreCase) ||
+                   op.Equals(EntityFilterOperators.EndsWith, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private object NormalizeValue(object rawValue, bool ignoreCase, bool isLongArray = false)
+        {
+            if (rawValue is JArray jArray)
             {
                 if (!jArray.Any())
                     return Array.Empty<object>(); // or null, depending on your needs
 
                 var first = jArray.First!;
 
+                if (ignoreCase && first.Type == JTokenType.String)
+                {
+                    return jArray.ToObject<string[]>().Select(x => x?.ToLower()).ToArray();
+                }
+
                 return first.Type switch
                 {
                     JTokenType.Integer =>
                         // Decide between long or int based on value range
-                        entityFilter.IsLongArray
+                        isLongArray
                             ? jArray.ToObject<long[]>()
                             : jArray.ToObject<int[]>(),
 
@@ -240,7 +314,19 @@ namespace AlJawad.SqlDynamicLinker.Core
 
             }
 
-            return entityFilter.Value;
+            if (ignoreCase)
+            {
+                if (rawValue is string s)
+                {
+                    return s.ToLower();
+                }
+                if (rawValue is IEnumerable<string> stringEnum && !(rawValue is JArray))
+                {
+                    return stringEnum.Select(x => x?.ToLower()).ToArray();
+                }
+            }
+
+            return rawValue;
         }
 
         private string GetComparisonOperator(string operatorValue)
@@ -261,7 +347,7 @@ namespace AlJawad.SqlDynamicLinker.Core
      
 
 
-        private void HandleContainsExpression(EntityFilter entityFilter, string name, int index, string negation,object value)
+        private void HandleContainsExpression(EntityFilter entityFilter, string name, int index, string negation, object value, bool shouldApplyIgnoreCase)
         {
             // If DataName is a nested collection path and NamePropertyOfCollection is set, handle dynamically
             if (!string.IsNullOrWhiteSpace(entityFilter.NamePropertyOfCollection) && name.Contains('.'))
@@ -275,7 +361,7 @@ namespace AlJawad.SqlDynamicLinker.Core
                     paramNames.Add("x" + i);
 
                 // Start with the outermost collection
-                sb.Append(negation+collections[0]);
+                sb.Append(negation + collections[0]);
                 // Build nested Any for each collection except the last
                 for (int i = 1; i < collections.Length; i++)
                 {
@@ -283,7 +369,10 @@ namespace AlJawad.SqlDynamicLinker.Core
                 }
                 // Innermost: check if the property is in the values
                 string lastParam = paramNames[collections.Length];
-                sb.Append($".Any({lastParam} => @{index}.Contains({lastParam}.{entityFilter.NamePropertyOfCollection}))");
+                string innerProp = $"{lastParam}.{entityFilter.NamePropertyOfCollection}";
+                if (shouldApplyIgnoreCase) innerProp += ".ToLower()";
+
+                sb.Append($".Any({lastParam} => @{index}.Contains({innerProp}))");
 
                 // Close all opened parentheses
                 for (int i = 1; i < collections.Length; i++)
@@ -297,15 +386,19 @@ namespace AlJawad.SqlDynamicLinker.Core
             // Fallback to original logic for single collection or property
             if (!string.IsNullOrWhiteSpace(entityFilter.NamePropertyOfCollection))
             {
-                _expression.Append($"{name}.Any(@{index}.Contains({entityFilter.NamePropertyOfCollection}))");
+                string innerProp = entityFilter.NamePropertyOfCollection;
+                if (shouldApplyIgnoreCase) innerProp += ".ToLower()";
+                _expression.Append($"{name}.Any(@{index}.Contains({innerProp}))");
             }
             else if (entityFilter.Value is JArray || entityFilter.Value is Array)
             {
-                _expression.Append($"{negation}@{index}.Contains({name})");
+                string propertyExpression = shouldApplyIgnoreCase ? $"{name}.ToLower()" : name;
+                _expression.Append($"{negation}@{index}.Contains({propertyExpression})");
             }
             else
             {
-                _expression.Append($"{negation}{name}.Contains(@{index})");
+                string propertyExpression = shouldApplyIgnoreCase ? $"{name}.ToLower()" : name;
+                _expression.Append($"{negation}{propertyExpression}.Contains(@{index})");
             }
             //_values.Add(entityFilter.Value);
             _values.Add(value);

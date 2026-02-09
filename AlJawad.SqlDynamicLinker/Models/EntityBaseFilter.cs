@@ -17,6 +17,7 @@ namespace AlJawad.SqlDynamicLinker.Models
     [JsonDerivedType(typeof(EntityFilter), "EntityFilter")]
     [JsonDerivedType(typeof(EntityMultilpleConditionsFilter), "EntityMultilpleConditionsFilter")]
     [JsonDerivedType(typeof(EntityGeometryFilter), "EntityGeometryFilter")]
+    [JsonDerivedType(typeof(EntityBoundingBoxFilter), "EntityBoundingBoxFilter")]
     //[JsonConverter(typeof(FilterBaseJsonConverter))]
 
     //[JsonPolymorphic(IgnoreUnrecognizedTypeDiscriminators = true,
@@ -39,5 +40,6 @@ namespace AlJawad.SqlDynamicLinker.Models
         //public string LogicOrDefault => string.IsNullOrWhiteSpace(Logic) ? EntityFilterLogic.And : Logic;
         public string LogicOrDefault => string.IsNullOrWhiteSpace(Logic) ? "" : Logic;
 
+        public bool? IgnoreCase { get; set; }
     }
 }

@@ -32,6 +32,9 @@ namespace AlJawad.SqlDynamicLinker.Converters
             var y = jo["Latitude"]?.ToString();
             var y2 = jo["latitude"]?.ToString();
 
+            var z = jo["MinLatitude"]?.ToString();
+            var z2 = jo["minLatitude"]?.ToString();
+
             if (!String.IsNullOrEmpty(x) || !String.IsNullOrEmpty(x2))
             {
                 target = new EntityMultilpleConditionsFilter();
@@ -39,6 +42,10 @@ namespace AlJawad.SqlDynamicLinker.Converters
             else if (!String.IsNullOrEmpty(y) || !String.IsNullOrEmpty(y2))
             {
                 target = new EntityGeometryFilter();
+            }
+            else if (!String.IsNullOrEmpty(z) || !String.IsNullOrEmpty(z2))
+            {
+                target = new EntityBoundingBoxFilter();
             }
             else
             {
