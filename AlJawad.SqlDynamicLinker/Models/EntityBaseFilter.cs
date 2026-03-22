@@ -1,7 +1,7 @@
 ﻿using AlJawad.SqlDynamicLinker.Enums;
 using AlJawad.SqlDynamicLinker.Swagger;
 using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;

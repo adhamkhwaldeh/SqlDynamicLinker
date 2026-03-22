@@ -75,11 +75,11 @@ namespace AlJawad.SqlDynamicLinkerShowCases.Controllers
                 return DynamicFilters;
             }
             var SearchFilters = BuildSearchFilter(SearchQuery);
-            if (SearchFilters !=null && SearchFilters.IsNullOrEmpty())
+            if (SearchFilters != null && !SearchFilters.Any())
             {
                 return DynamicFilters;
             }
-            if (DynamicFilters.IsNullOrEmpty())
+            if (DynamicFilters == null || !DynamicFilters.Any())
             {
                 return SearchFilters;
             }
